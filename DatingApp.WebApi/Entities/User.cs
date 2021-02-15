@@ -12,6 +12,8 @@ namespace DatingApp.WebApi.Entities
         [Required]
         [StringLength(30)]
         public string Username { get; set; }
+        public byte[] PasswordHash { get; set; }
+        public byte[] PasswordSalt { get; set; }
         public DateTimeOffset CreatedDate { get; set; }
         [StringLength(30)]
         public string CreatedBy { get; set; }
