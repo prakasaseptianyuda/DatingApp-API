@@ -1,6 +1,7 @@
 using DatingApp.WebApi.Entities;
 using DatingApp.WebApi.Extensions;
 using DatingApp.WebApi.Interfaces;
+using DatingApp.WebApi.Middleware;
 using DatingApp.WebApi.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -47,9 +48,10 @@ namespace DatingApp.WebApi
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseMiddleware<ExceptionMiddleware>();
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                //app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "DatingApp.WebApi v1"));
             }

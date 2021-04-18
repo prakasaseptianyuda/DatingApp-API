@@ -39,15 +39,19 @@ namespace DatingApp.WebApi.Controllers
                 Username = userDto.Username,
                 PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(userDto.Password)),
                 PasswordSalt = hmac.Key,
-                CreatedDate = DateTimeOffset.Now,
+                CreatedDate = DateTime.Now,
                 CreatedBy = "System",
-                UpdatedDate = DateTimeOffset.Now,
+                UpdatedDate = DateTime.Now,
                 UpdatedBy = "System"
             };
 
             _context.User.Add(user);
             await _context.SaveChangesAsync();
-            return Ok("Data berhasil disimpan");
+            return Ok(new UserDto
+            {
+                Username = user.Username,
+                Token = _tokenService.CreateToken(user)
+            });
         }
 
         [HttpPost("login")]

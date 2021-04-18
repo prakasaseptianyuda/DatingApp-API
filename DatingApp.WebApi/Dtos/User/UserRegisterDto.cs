@@ -11,8 +11,9 @@ namespace DatingApp.WebApi.Dtos.User
         [Required(ErrorMessage = "Username harus diisi")]
         [MinLength(3)]
         public string Username { get; set; }
+
         [Required(ErrorMessage = "Password harus diisi")]
-        [MinLength(3)]
+        [StringLength(8,MinimumLength = 4)]
         public string Password { get; set; }
     }
 }

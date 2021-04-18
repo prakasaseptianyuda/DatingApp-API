@@ -1,4 +1,7 @@
-﻿using DatingApp.WebApi.Entities;
+﻿using AutoMapper;
+using DatingApp.WebApi.Dtos.User;
+using DatingApp.WebApi.Entities;
+using DatingApp.WebApi.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,33 +13,33 @@ using System.Threading.Tasks;
 
 namespace DatingApp.WebApi.Controllers
 {
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly DataContext _context;
+        private readonly IUserService _userService;
+        private readonly IMapper _mapper;
 
-        public UserController(DataContext context)
+        public UserController(IUserService userService, IMapper mapper)
         {
-            _context = context;
+            _userService = userService;
+            _mapper = mapper;
         }
 
         [HttpGet]
         public async Task<ActionResult> GetUsers()
         {
-            var users = await _context.User.ToListAsync();
+            var users = await _userService.GetMembersAsync();
+            //var usersToReturn = _mapper.Map<IEnumerable<MemberDto>>(users);
             return Ok(users);
         }
 
-        [Authorize]
-        [HttpGet("{id}")]
-        public async Task<ActionResult> GetUserById(int id)
+        [HttpGet("{username}")]
+        public async Task<ActionResult> GetUser(string username)
         {
-            var user = await _context.User.FindAsync(id);
-            if (user == null)
-            {
-                return BadRequest("User tidak ditemukan.");
-            }
+            var user = await _userService.GetMemberAsync(username);
+            //var userToReturn = _mapper.Map<MemberDto>(user);
             return Ok(user);
         }
 
