@@ -27,7 +27,7 @@ namespace DatingApp.WebApi.Controllers
         }
 
         /// <summary>
-        /// test test
+        /// test test test
         /// </summary>
         /// <param name="userDto"></param>
         /// <returns></returns>
