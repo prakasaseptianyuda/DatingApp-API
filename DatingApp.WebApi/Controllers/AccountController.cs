@@ -26,6 +26,11 @@ namespace DatingApp.WebApi.Controllers
             _tokenService = tokenService;
         }
 
+        /// <summary>
+        /// test
+        /// </summary>
+        /// <param name="userDto"></param>
+        /// <returns></returns>
         [HttpPost("register")]
         public async Task<ActionResult> Register(UserRegisterDto userDto)
         {
