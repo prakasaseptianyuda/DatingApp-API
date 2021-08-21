@@ -12,9 +12,12 @@ namespace DatingApp.WebApi.Interfaces
         void Update(User user);
         Task<bool> SaveAllAsync();
         Task<IEnumerable<User>> GetUserAsync();
-        Task<User> GetUserByIdAsync(int id);
-        Task<User> GetUserByNameAsync(string username);
+        Task<MemberDto> GetUserByIdAsync(int id);
+        Task<User> GetUserByUsernameAsync(string username);
+
+        Task<MemberDto> GetMemberByUsernameAsync(string username);
         Task<MemberDto> GetMemberAsync(string username);
         Task<IEnumerable<MemberDto>> GetMembersAsync();
+        Task<bool> UpdateAsync(User user,MemberUpdateDto memberUpdateDto);
     }
 }
