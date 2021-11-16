@@ -53,7 +53,7 @@ namespace DatingApp.WebApi.Services
 
         public async Task<User> GetUserByUsernameAsync(string username)
         {
-            return await _context.User.FirstOrDefaultAsync(x => x.Username == username);
+            return await _context.User.Include(x => x.Photos).FirstOrDefaultAsync(x => x.Username == username);
         }
 
         public async Task<bool> SaveAllAsync()

@@ -62,7 +62,7 @@ namespace DatingApp.WebApi.Controllers
         [HttpPost("login")]
         public async Task<ActionResult> Login(UserLoginDto userDto)
         {
-            var user = await _context.User.FirstOrDefaultAsync(x => x.Username == userDto.Username);
+            var user = await _context.User.Include(q => q.Photos).FirstOrDefaultAsync(x => x.Username == userDto.Username);
             if (user == null)
             {
                 return Unauthorized("Username tidak terdaftar");
@@ -81,7 +81,8 @@ namespace DatingApp.WebApi.Controllers
             return Ok(new UserDto
             {
                 Username = user.Username,
-                Token = _tokenService.CreateToken(user)
+                Token = _tokenService.CreateToken(user),
+                PhotoUrl = user.Photos.FirstOrDefault(x => x.IsMain)?.Url
             });
         }
 
