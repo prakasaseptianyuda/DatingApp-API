@@ -1,4 +1,5 @@
-﻿using DatingApp.WebApi.Dtos.User;
+﻿using AutoMapper;
+using DatingApp.WebApi.Dtos.User;
 using DatingApp.WebApi.Entities;
 using DatingApp.WebApi.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -19,11 +20,13 @@ namespace DatingApp.WebApi.Controllers
     {
         private readonly DataContext _context;
         private readonly ITokenService _tokenService;
+        private readonly IMapper _mapper;
 
-        public AccountController(DataContext context, ITokenService tokenService)
+        public AccountController(DataContext context, ITokenService tokenService,IMapper mapper)
         {
             _context = context;
             _tokenService = tokenService;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -39,23 +42,25 @@ namespace DatingApp.WebApi.Controllers
                 return BadRequest("Username telah terdaftar");
             }
 
+            var user = _mapper.Map<User>(userDto);
+
             using var hmac = new HMACSHA512();
-            var user = new User { 
-                Username = userDto.Username,
-                PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(userDto.Password)),
-                PasswordSalt = hmac.Key,
-                CreatedDate = DateTime.Now,
-                CreatedBy = "System",
-                UpdatedDate = DateTime.Now,
-                UpdatedBy = "System"
-            };
+
+            user.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(userDto.Password));
+            user.PasswordSalt = hmac.Key;
+            user.CreatedDate = DateTime.Now;
+            user.CreatedBy = "System";
+            user.UpdatedDate = DateTime.Now;
+            user.UpdatedBy = "System";
+
 
             _context.User.Add(user);
             await _context.SaveChangesAsync();
             return Ok(new UserDto
             {
                 Username = user.Username,
-                Token = _tokenService.CreateToken(user)
+                Token = _tokenService.CreateToken(user),
+                KnownAs = user.KnownAs
             });
         }
 
@@ -82,7 +87,8 @@ namespace DatingApp.WebApi.Controllers
             {
                 Username = user.Username,
                 Token = _tokenService.CreateToken(user),
-                PhotoUrl = user.Photos.FirstOrDefault(x => x.IsMain)?.Url
+                PhotoUrl = user.Photos.FirstOrDefault(x => x.IsMain)?.Url,
+                KnownAs = user.KnownAs
             });
         }
 
