@@ -1,5 +1,6 @@
 ﻿using DatingApp.WebApi.Dtos.User;
 using DatingApp.WebApi.Entities;
+using DatingApp.WebApi.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,12 +13,13 @@ namespace DatingApp.WebApi.Interfaces
         void Update(User user);
         Task<bool> SaveAllAsync();
         Task<IEnumerable<User>> GetUserAsync();
-        Task<MemberDto> GetUserByIdAsync(int id);
+        Task<User> GetUserByIdAsync(int id);
         Task<User> GetUserByUsernameAsync(string username);
 
         Task<MemberDto> GetMemberByUsernameAsync(string username);
+        Task<MemberDto> GetMemberByIdAsync(int username);
         Task<MemberDto> GetMemberAsync(string username);
-        Task<IEnumerable<MemberDto>> GetMembersAsync();
+        Task<PagedList<MemberDto>> GetMembersAsync(UserParams userParams);
         Task<bool> UpdateAsync(User user,MemberUpdateDto memberUpdateDto);
     }
 }

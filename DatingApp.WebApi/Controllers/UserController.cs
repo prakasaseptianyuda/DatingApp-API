@@ -2,6 +2,7 @@
 using DatingApp.WebApi.Dtos.User;
 using DatingApp.WebApi.Entities;
 using DatingApp.WebApi.Extensions;
+using DatingApp.WebApi.Helpers;
 using DatingApp.WebApi.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -15,10 +16,10 @@ using System.Threading.Tasks;
 
 namespace DatingApp.WebApi.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class UserController : BaseApiController
     {
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
@@ -32,9 +33,18 @@ namespace DatingApp.WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetMembers()
+        public async Task<ActionResult> GetMembers([FromQuery]UserParams userParams)
         {
-            var users = await _userService.GetMembersAsync();
+            var user = await _userService.GetMemberByUsernameAsync(User.GetUsername());
+            userParams.CurrentUsername = user.Username;
+
+            if (string.IsNullOrEmpty(userParams.Gender))
+            {
+                userParams.Gender = user.Gender == "male" ? "female" : "male";
+            }
+
+            var users = await _userService.GetMembersAsync(userParams);
+            Response.AddPagionationHeader(users.CurrentPage, users.PageSize, users.TotalCount, users.TotalPage);
             //var usersToReturn = _mapper.Map<IEnumerable<MemberDto>>(users);
             return Ok(users);
         }
@@ -51,6 +61,13 @@ namespace DatingApp.WebApi.Controllers
         public async Task<ActionResult> GetMemberByUsername(string username)
         {
             var user = await _userService.GetMemberByUsernameAsync(username);
+            return Ok(user);
+        }
+
+        [HttpGet("GetMemberById/{id}")]
+        public async Task<ActionResult> GetMemberById(int id)
+        {
+            var user = await _userService.GetMemberByIdAsync(id);
             return Ok(user);
         }
 

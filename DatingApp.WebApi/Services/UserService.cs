@@ -2,6 +2,7 @@
 using AutoMapper.QueryableExtensions;
 using DatingApp.WebApi.Dtos.User;
 using DatingApp.WebApi.Entities;
+using DatingApp.WebApi.Helpers;
 using DatingApp.WebApi.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -29,10 +30,21 @@ namespace DatingApp.WebApi.Services
             return member;
         }
 
-        public async Task<IEnumerable<MemberDto>> GetMembersAsync()
+        public async Task<PagedList<MemberDto>> GetMembersAsync(UserParams userParams)
         {
-            var members = await _context.User.ProjectTo<MemberDto>(_mapper.ConfigurationProvider).ToListAsync();
-            return members;
+            var minDob = DateTime.Today.AddYears(-userParams.MaxAge -1);
+            var maxDob = DateTime.Today.AddYears(-userParams.MinAge -1);
+
+            var query = _context.User.AsQueryable();
+            query = query.Where(x => x.Username != userParams.CurrentUsername && x.Gender == userParams.Gender && x.Birthdate >= minDob && x.Birthdate <= maxDob);
+            query = userParams.OrderBy switch
+            {
+                "created" => query.OrderByDescending(u => u.CreatedDate),
+                _ => query.OrderByDescending(u => u.LastActive)
+            };
+
+
+            return await PagedList<MemberDto>.CreateAsync(query.ProjectTo<MemberDto>(_mapper.ConfigurationProvider).AsNoTracking(), userParams.PageNumber, userParams.PageSize);
         }
 
         public async Task<MemberDto> GetMemberByUsernameAsync(string username)
@@ -40,15 +52,19 @@ namespace DatingApp.WebApi.Services
             return await _context.User.ProjectTo<MemberDto>(_mapper.ConfigurationProvider).FirstOrDefaultAsync(x => x.Username == username);
         }
 
+        public async Task<MemberDto> GetMemberByIdAsync(int id)
+        {
+            return await _context.User.ProjectTo<MemberDto>(_mapper.ConfigurationProvider).FirstOrDefaultAsync(x => x.UserId == id);
+        }
+
         public async Task<IEnumerable<User>> GetUserAsync()
         {
             return await _context.User.Include(x => x.Photos).ToListAsync();
         }
 
-        public async Task<MemberDto> GetUserByIdAsync(int id)
+        public async Task<User> GetUserByIdAsync(int id)
         {
-            return await _context.User.Where(x => x.UserId == id).
-                ProjectTo<MemberDto>(_mapper.ConfigurationProvider).FirstOrDefaultAsync();
+            return await _context.User.Where(x => x.UserId == id).FirstOrDefaultAsync();
         }
 
         public async Task<User> GetUserByUsernameAsync(string username)
