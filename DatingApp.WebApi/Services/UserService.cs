@@ -49,7 +49,7 @@ namespace DatingApp.WebApi.Services
 
         public async Task<MemberDto> GetMemberByUsernameAsync(string username)
         {
-            return await _context.User.ProjectTo<MemberDto>(_mapper.ConfigurationProvider).FirstOrDefaultAsync(x => x.Username == username);
+            return await _context.User.ProjectTo<MemberDto>(_mapper.ConfigurationProvider).FirstOrDefaultAsync(x => x.Username.ToLower() == username);
         }
 
         public async Task<MemberDto> GetMemberByIdAsync(int id)

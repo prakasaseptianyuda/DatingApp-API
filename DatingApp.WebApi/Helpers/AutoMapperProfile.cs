@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using DatingApp.WebApi.Dtos.Message;
 using DatingApp.WebApi.Dtos.User;
 using DatingApp.WebApi.Entities;
 using DatingApp.WebApi.Extensions;
@@ -21,6 +22,12 @@ namespace DatingApp.WebApi.Helpers
             CreateMap<Photo, PhotoDto>();
             CreateMap<MemberUpdateDto, User>();
             CreateMap<UserRegisterDto, User>();
+            CreateMap<Message, MessageDto>()
+                .ForMember(dest => dest.SenderPhotoUrl, opt => opt.MapFrom(src =>
+                src.Sender.Photos.FirstOrDefault(x => x.IsMain).Url))
+                .ForMember(dest => dest.RecipientPhotoUrl, opt => opt.MapFrom(src =>
+                src.Recipient.Photos.FirstOrDefault(x => x.IsMain).Url));
+
         }
     }
 }

@@ -32,9 +32,10 @@ namespace DatingApp.WebApi.Entities
         [StringLength(30)]
         public string UpdatedBy { get; set; }
 
-        //public int GetAge()
-        //{
-        //    return Birthdate.CalculateAge();
-        //}
+        public ICollection<UserLike> LikedByUsers { get; set; }
+        public ICollection<UserLike> LikedUsers { get; set; }
+
+        public ICollection<Message> MeesagesSent { get; set; }
+        public ICollection<Message> MessagesReceived { get; set; }
     }
 }

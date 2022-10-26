@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace DatingApp.WebApi.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : BaseApiController

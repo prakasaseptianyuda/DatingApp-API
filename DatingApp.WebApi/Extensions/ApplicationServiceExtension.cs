@@ -20,6 +20,8 @@ namespace DatingApp.WebApi.Extensions
             services.AddScoped<IPhotoService, PhotoService>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ILikeService, LikeService>();
+            services.AddScoped<IMessageService, MessageService>();
             services.AddScoped<LogUserActivity>();
             services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
             services.AddDbContext<DataContext>(options =>

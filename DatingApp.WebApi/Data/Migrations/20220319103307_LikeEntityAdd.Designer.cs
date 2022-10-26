@@ -4,63 +4,22 @@ using DatingApp.WebApi.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DatingApp.WebApi.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220319103307_LikeEntityAdd")]
+    partial class LikeEntityAdd
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.5")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("DatingApp.WebApi.Entities.Message", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Content")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("DateRead")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("MessageSent")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("RecipientDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("RecipientId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("RecipientUsername")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("SenderDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("SenderId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("SenderUsername")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RecipientId");
-
-                    b.HasIndex("SenderId");
-
-                    b.ToTable("Message");
-                });
 
             modelBuilder.Entity("DatingApp.WebApi.Entities.Photo", b =>
                 {
@@ -167,25 +126,6 @@ namespace DatingApp.WebApi.Data.Migrations
                     b.ToTable("Like");
                 });
 
-            modelBuilder.Entity("DatingApp.WebApi.Entities.Message", b =>
-                {
-                    b.HasOne("DatingApp.WebApi.Entities.User", "Recipient")
-                        .WithMany("MessagesReceived")
-                        .HasForeignKey("RecipientId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("DatingApp.WebApi.Entities.User", "Sender")
-                        .WithMany("MeesagesSent")
-                        .HasForeignKey("SenderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Recipient");
-
-                    b.Navigation("Sender");
-                });
-
             modelBuilder.Entity("DatingApp.WebApi.Entities.Photo", b =>
                 {
                     b.HasOne("DatingApp.WebApi.Entities.User", "User")
@@ -221,10 +161,6 @@ namespace DatingApp.WebApi.Data.Migrations
                     b.Navigation("LikedByUsers");
 
                     b.Navigation("LikedUsers");
-
-                    b.Navigation("MeesagesSent");
-
-                    b.Navigation("MessagesReceived");
 
                     b.Navigation("Photos");
                 });
