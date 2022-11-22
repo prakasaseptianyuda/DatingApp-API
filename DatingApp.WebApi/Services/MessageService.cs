@@ -37,7 +37,7 @@ namespace DatingApp.WebApi.Services
             return await _context.Message
                 .Include(u => u.Sender)
                 .Include(u => u.Recipient)
-                .FindAsync(id);
+                .FirstOrDefaultAsync(u => u.Id == id);
         }
 
         public async Task<PagedList<MessageDto>> GetMessageForUser(MessageParams messageParams)
