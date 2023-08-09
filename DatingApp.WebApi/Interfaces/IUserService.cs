@@ -10,16 +10,16 @@ namespace DatingApp.WebApi.Interfaces
 {
     public interface IUserService
     {
-        void Update(User user);
+        void Update(AppUser user);
         Task<bool> SaveAllAsync();
-        Task<IEnumerable<User>> GetUserAsync();
-        Task<User> GetUserByIdAsync(int id);
-        Task<User> GetUserByUsernameAsync(string username);
+        Task<IEnumerable<AppUser>> GetUserAsync();
+        Task<AppUser> GetUserByIdAsync(int id);
+        Task<AppUser> GetUserByUsernameAsync(string username);
 
         Task<MemberDto> GetMemberByUsernameAsync(string username);
         Task<MemberDto> GetMemberByIdAsync(int username);
         Task<MemberDto> GetMemberAsync(string username);
         Task<PagedList<MemberDto>> GetMembersAsync(UserParams userParams);
-        Task<bool> UpdateAsync(User user,MemberUpdateDto memberUpdateDto);
+        Task<bool> UpdateAsync(AppUser user,MemberUpdateDto memberUpdateDto);
     }
 }

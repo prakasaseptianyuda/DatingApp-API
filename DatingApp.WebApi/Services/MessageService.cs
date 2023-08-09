@@ -48,9 +48,9 @@ namespace DatingApp.WebApi.Services
 
             query = messageParams.Container switch
             {
-                "Inbox" => query.Where(u => u.Recipient.Username == messageParams.Username && u.RecipientDeleted == false),
-                "Outbox" => query.Where(u => u.Sender.Username == messageParams.Username && u.SenderDeleted == false),
-                _ => query.Where(u => u.Recipient.Username == messageParams.Username && u.DateRead == null && u.RecipientDeleted == false)
+                "Inbox" => query.Where(u => u.Recipient.UserName == messageParams.Username && u.RecipientDeleted == false),
+                "Outbox" => query.Where(u => u.Sender.UserName == messageParams.Username && u.SenderDeleted == false),
+                _ => query.Where(u => u.Recipient.UserName == messageParams.Username && u.DateRead == null && u.RecipientDeleted == false)
             };
 
             var messages = query.ProjectTo<MessageDto>(_mapper.ConfigurationProvider);
@@ -67,7 +67,7 @@ namespace DatingApp.WebApi.Services
                 .Where(x => x.RecipientUsername == currentUsername && x.RecipientDeleted == false && x.SenderUsername == recipientUsername ||
             x.RecipientUsername == recipientUsername && x.SenderUsername == currentUsername && x.SenderDeleted == false).OrderByDescending(o => o.MessageSent).ToListAsync();
 
-            var unreadMessages = messages.Where(m => m.DateRead == null && m.Recipient.Username == currentUsername).ToList();
+            var unreadMessages = messages.Where(m => m.DateRead == null && m.Recipient.UserName == currentUsername).ToList();
 
             if (unreadMessages.Any())
             {

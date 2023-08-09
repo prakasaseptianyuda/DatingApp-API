@@ -3,6 +3,7 @@ using DatingApp.WebApi.Dtos.User;
 using DatingApp.WebApi.Entities;
 using DatingApp.WebApi.Interfaces;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -18,13 +19,13 @@ namespace DatingApp.WebApi.Controllers
     [ApiController]
     public class AccountController : ControllerBase
     {
-        private readonly DataContext _context;
+        private readonly UserManager<AppUser> _userManager;
         private readonly ITokenService _tokenService;
         private readonly IMapper _mapper;
 
-        public AccountController(DataContext context, ITokenService tokenService,IMapper mapper)
+        public AccountController(UserManager<AppUser> userManager, ITokenService tokenService,IMapper mapper)
         {
-            _context = context;
+            _userManager = userManager;
             _tokenService = tokenService;
             _mapper = mapper;
         }
@@ -42,24 +43,32 @@ namespace DatingApp.WebApi.Controllers
                 return BadRequest("Username telah terdaftar");
             }
 
-            var user = _mapper.Map<User>(userDto);
+            var user = _mapper.Map<AppUser>(userDto);
 
             using var hmac = new HMACSHA512();
 
-            user.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(userDto.Password));
-            user.PasswordSalt = hmac.Key;
             user.CreatedDate = DateTime.Now;
             user.CreatedBy = "System";
             user.UpdatedDate = DateTime.Now;
             user.UpdatedBy = "System";
 
+            var result = await _userManager.CreateAsync(user, userDto.Password);
+            if (!result.Succeeded)
+            {
+                return BadRequest(result.Errors);
+            }
 
-            _context.User.Add(user);
-            await _context.SaveChangesAsync();
+            var roleResult = await _userManager.AddToRoleAsync(user,"Member");
+
+            if (!roleResult.Succeeded)
+            {
+                return BadRequest(result.Errors);
+            }
+
             return Ok(new UserDto
             {
-                Username = user.Username,
-                Token = _tokenService.CreateToken(user),
+                Username = user.UserName,
+                Token = await _tokenService.CreateToken(user),
                 KnownAs = user.KnownAs,
                 Gender = user.Gender
             });
@@ -68,26 +77,23 @@ namespace DatingApp.WebApi.Controllers
         [HttpPost("login")]
         public async Task<ActionResult> Login(UserLoginDto userDto)
         {
-            var user = await _context.User.Include(q => q.Photos).FirstOrDefaultAsync(x => x.Username == userDto.Username);
+            var user = await _userManager.Users.Include(q => q.Photos).FirstOrDefaultAsync(x => x.UserName == userDto.Username);
             if (user == null)
             {
                 return Unauthorized("Username tidak terdaftar");
             }
 
-            using var hmcac = new HMACSHA512(user.PasswordSalt);
+            var result = await _userManager.CheckPasswordAsync(user, userDto.Password);
 
-            var computedHash = hmcac.ComputeHash(Encoding.UTF8.GetBytes(userDto.Password));
-            for (int i = 0; i < computedHash.Length; i++)
+            if (!result)
             {
-                if (computedHash[i] != user.PasswordHash[i])
-                {
-                    return Unauthorized("Password salah");
-                }
+                return Unauthorized("Invalid Password");
             }
+
             return Ok(new UserDto
             {
-                Username = user.Username,
-                Token = _tokenService.CreateToken(user),
+                Username = user.UserName,
+                Token = await _tokenService.CreateToken(user),
                 PhotoUrl = user.Photos.FirstOrDefault(x => x.IsMain)?.Url,
                 KnownAs = user.KnownAs,
                 Gender = user.Gender
@@ -96,7 +102,7 @@ namespace DatingApp.WebApi.Controllers
 
         private async Task<bool> IsUserExist(string username)
         {
-            return await _context.User.AnyAsync(x => x.Username == username);
+            return await _userManager.Users.AnyAsync(x => x.UserName == username);
         }
 
     }

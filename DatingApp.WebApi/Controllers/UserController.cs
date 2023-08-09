@@ -32,6 +32,8 @@ namespace DatingApp.WebApi.Controllers
             _photoService = photoService;
         }
 
+        //[Authorize(Roles = "Admin")]
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult> GetMembers([FromQuery]UserParams userParams)
         {
@@ -57,6 +59,8 @@ namespace DatingApp.WebApi.Controllers
             return Ok(user);
         }
 
+        //[Authorize(Roles ="Member")]
+        [Authorize]
         [HttpGet("GetMemberByUsername/{username}")]
         public async Task<ActionResult> GetMemberByUsername(string username)
         {
@@ -106,7 +110,7 @@ namespace DatingApp.WebApi.Controllers
 
             if (await _userService.SaveAllAsync())
             {
-                return CreatedAtRoute("GetUser",new { id = user.UserId }, _mapper.Map<PhotoDto>(photo));
+                return CreatedAtRoute("GetUser",new { id = user.Id }, _mapper.Map<PhotoDto>(photo));
                 //return Ok(_mapper.Map<PhotoDto>(photo));
             }
 

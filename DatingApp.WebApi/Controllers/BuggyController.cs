@@ -30,7 +30,7 @@ namespace DatingApp.WebApi.Controllers
         [HttpGet("not-found")]
         public ActionResult GetNotFound()
         {
-            var thing = _context.User.Find(-1);
+            var thing = _context.Users.Find(-1);
 
             if (thing == null)
             {
@@ -44,7 +44,7 @@ namespace DatingApp.WebApi.Controllers
         public ActionResult GetServerError()
         {
 
-            var thing = _context.User.Find(-1);
+            var thing = _context.Users.Find(-1);
             var thingToReturn = thing.ToString();
             return Ok(thingToReturn);
 

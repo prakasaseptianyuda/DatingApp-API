@@ -27,7 +27,7 @@ namespace DatingApp.WebApi.Services
 
         public async Task<PagedList<LikeDto>> GetUserLikes(LikeParams likeParams)
         {
-            var users = _context.User.OrderBy(x => x.Username).AsQueryable();
+            var users = _context.Users.OrderBy(x => x.UserName).AsQueryable();
             var likes = _context.Like.AsQueryable();
 
             if (likeParams.Predicate == "liked")
@@ -44,20 +44,20 @@ namespace DatingApp.WebApi.Services
 
             var likedUsers = users.Select(user => new LikeDto
             {
-                Username = user.Username,
+                Username = user.UserName,
                 KnownAs = user.KnownAs,
                 Age = user.Birthdate.CalculateAge(),
                 PhotoUrl = user.Photos.FirstOrDefault(p => p.IsMain).Url,
                 City = user.City,
-                Id = user.UserId
+                Id = user.Id
             });
 
             return await PagedList<LikeDto>.CreateAsync(likedUsers, likeParams.PageNumber, likeParams.PageSize);
         }
 
-        public async Task<User> GetUserWithLikes(int userId)
+        public async Task<AppUser> GetUserWithLikes(int userId)
         {
-            return await _context.User.Include(x => x.LikedUsers).FirstOrDefaultAsync(x => x.UserId == userId);
+            return await _context.Users.Include(x => x.LikedUsers).FirstOrDefaultAsync(x => x.Id == userId);
         }
     }
 }

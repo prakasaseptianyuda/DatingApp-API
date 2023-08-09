@@ -11,7 +11,7 @@ namespace DatingApp.WebApi.Interfaces
     public interface ILikeService
     {
         Task<UserLike> GetUserLike(int sourceUserId, int likeUserId);
-        Task<User> GetUserWithLikes(int userId);
+        Task<AppUser> GetUserWithLikes(int userId);
         Task<PagedList<LikeDto>> GetUserLikes(LikeParams likeParams);
     }
 }

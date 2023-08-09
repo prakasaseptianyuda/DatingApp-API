@@ -25,7 +25,7 @@ namespace DatingApp.WebApi.Services
 
         public async Task<MemberDto> GetMemberAsync(string username)
         {
-            var member = await _context.User.Where(x => x.Username == username).
+            var member = await _context.Users.Where(x => x.UserName == username).
                 ProjectTo<MemberDto>(_mapper.ConfigurationProvider).FirstOrDefaultAsync();
             return member;
         }
@@ -35,8 +35,8 @@ namespace DatingApp.WebApi.Services
             var minDob = DateTime.Today.AddYears(-userParams.MaxAge -1);
             var maxDob = DateTime.Today.AddYears(-userParams.MinAge -1);
 
-            var query = _context.User.AsQueryable();
-            query = query.Where(x => x.Username != userParams.CurrentUsername && x.Gender == userParams.Gender && x.Birthdate >= minDob && x.Birthdate <= maxDob);
+            var query = _context.Users.AsQueryable();
+            query = query.Where(x => x.UserName != userParams.CurrentUsername && x.Gender == userParams.Gender && x.Birthdate >= minDob && x.Birthdate <= maxDob);
             query = userParams.OrderBy switch
             {
                 "created" => query.OrderByDescending(u => u.CreatedDate),
@@ -49,27 +49,27 @@ namespace DatingApp.WebApi.Services
 
         public async Task<MemberDto> GetMemberByUsernameAsync(string username)
         {
-            return await _context.User.ProjectTo<MemberDto>(_mapper.ConfigurationProvider).FirstOrDefaultAsync(x => x.Username.ToLower() == username);
+            return await _context.Users.ProjectTo<MemberDto>(_mapper.ConfigurationProvider).FirstOrDefaultAsync(x => x.Username.ToLower() == username);
         }
 
         public async Task<MemberDto> GetMemberByIdAsync(int id)
         {
-            return await _context.User.ProjectTo<MemberDto>(_mapper.ConfigurationProvider).FirstOrDefaultAsync(x => x.UserId == id);
+            return await _context.Users.ProjectTo<MemberDto>(_mapper.ConfigurationProvider).FirstOrDefaultAsync(x => x.UserId == id);
         }
 
-        public async Task<IEnumerable<User>> GetUserAsync()
+        public async Task<IEnumerable<AppUser>> GetUserAsync()
         {
-            return await _context.User.Include(x => x.Photos).ToListAsync();
+            return await _context.Users.Include(x => x.Photos).ToListAsync();
         }
 
-        public async Task<User> GetUserByIdAsync(int id)
+        public async Task<AppUser> GetUserByIdAsync(int id)
         {
-            return await _context.User.Where(x => x.UserId == id).FirstOrDefaultAsync();
+            return await _context.Users.Where(x => x.Id == id).FirstOrDefaultAsync();
         }
 
-        public async Task<User> GetUserByUsernameAsync(string username)
+        public async Task<AppUser> GetUserByUsernameAsync(string username)
         {
-            return await _context.User.Include(x => x.Photos).FirstOrDefaultAsync(x => x.Username == username);
+            return await _context.Users.Include(x => x.Photos).FirstOrDefaultAsync(x => x.UserName == username);
         }
 
         public async Task<bool> SaveAllAsync()
@@ -77,12 +77,12 @@ namespace DatingApp.WebApi.Services
             return await _context.SaveChangesAsync() > 0;
         }
 
-        public void Update(User user)
+        public void Update(AppUser user)
         {
             _context.Entry(user).State = EntityState.Modified;
         }
 
-        public async Task<bool> UpdateAsync(User user,MemberUpdateDto memberUpdateDto)
+        public async Task<bool> UpdateAsync(AppUser user,MemberUpdateDto memberUpdateDto)
         {
             _mapper.Map(memberUpdateDto,user);
 

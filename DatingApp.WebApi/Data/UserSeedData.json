@@ -1,6 +1,6 @@
 ﻿[
   {
-    "Username": "Geneva",
+    "UserName": "Geneva",
     "Birthdate": "1985-08-16",
     "KnownAs": "Geneva",
     "LastActive": "2020-12-31",
@@ -22,7 +22,7 @@
     "UpdatedBy": "Seeding"
   },
   {
-    "Username": "Elsa",
+    "UserName": "Elsa",
     "Birthdate": "1968-04-16",
     "KnownAs": "Elsa",
     "LastActive": "2020-12-31",
@@ -44,7 +44,7 @@
     "UpdatedBy": "Seeding"
   },
   {
-    "Username": "Della",
+    "UserName": "Della",
     "Birthdate": "1983-06-30",
     "KnownAs": "Della",
     "LastActive": "2020-12-31",
@@ -66,7 +66,7 @@
     "UpdatedBy": "Seeding"
   },
   {
-    "Username": "Katherine",
+    "UserName": "Katherine",
     "Birthdate": "1959-11-19",
     "KnownAs": "Katherine",
     "LastActive": "2020-12-31",
@@ -88,7 +88,7 @@
     "UpdatedBy": "Seeding"
   },
   {
-    "Username": "Charlotte",
+    "UserName": "Charlotte",
     "Birthdate": "1972-04-22",
     "KnownAs": "Charlotte",
     "LastActive": "2020-12-31",
@@ -110,7 +110,7 @@
     "UpdatedBy": "Seeding"
   },
   {
-    "Username": "Yolanda",
+    "UserName": "Yolanda",
     "Birthdate": "1989-06-21",
     "KnownAs": "Yolanda",
     "LastActive": "2020-12-31",
@@ -132,7 +132,7 @@
     "UpdatedBy": "Seeding"
   },
   {
-    "Username": "Rosalinda",
+    "UserName": "Rosalinda",
     "Birthdate": "1988-06-09",
     "KnownAs": "Rosalinda",
     "LastActive": "2020-12-31",
@@ -154,7 +154,7 @@
     "UpdatedBy": "Seeding"
   },
   {
-    "Username": "Anna",
+    "UserName": "Anna",
     "Birthdate": "1980-03-27",
     "KnownAs": "Anna",
     "LastActive": "2020-12-31",
@@ -176,7 +176,7 @@
     "UpdatedBy": "Seeding"
   },
   {
-    "Username": "Sonja",
+    "UserName": "Sonja",
     "Birthdate": "1957-03-08",
     "KnownAs": "Sonja",
     "LastActive": "2020-12-31",
@@ -198,7 +198,7 @@
     "UpdatedBy": "Seeding"
   },
   {
-    "Username": "Eddie",
+    "UserName": "Eddie",
     "Birthdate": "1953-06-18",
     "KnownAs": "Eddie",
     "LastActive": "2020-12-31",
@@ -220,7 +220,7 @@
     "UpdatedBy": "Seeding"
   },
   {
-    "Username": "Robles",
+    "UserName": "Robles",
     "Birthdate": "1972-03-24",
     "KnownAs": "Robles",
     "LastActive": "2020-12-31",
@@ -242,7 +242,7 @@
     "UpdatedBy": "Seeding"
   },
   {
-    "Username": "Anthony",
+    "UserName": "Anthony",
     "Birthdate": "1952-07-05",
     "KnownAs": "Anthony",
     "LastActive": "2020-12-31",
@@ -264,7 +264,7 @@
     "UpdatdeBy": "Seeding"
   },
   {
-    "Username": "Santiago",
+    "UserName": "Santiago",
     "Birthdate": "1958-12-02",
     "KnownAs": "Santiago",
     "LastActive": "2020-12-31",
@@ -286,7 +286,7 @@
     "UpdatedBy": "Seeding"
   },
   {
-    "Username": "Rhodes",
+    "UserName": "Rhodes",
     "Birthdate": "1962-03-17",
     "KnownAs": "Rhodes",
     "LastActive": "2020-12-31",
@@ -308,7 +308,7 @@
     "UpdatedBy": "Seeding"
   },
   {
-    "Username": "Miranda",
+    "UserName": "Miranda",
     "Birthdate": "1973-08-06",
     "KnownAs": "Miranda",
     "LastActive": "2020-12-31",
@@ -330,7 +330,7 @@
     "UpdatedBy": "Seeding"
   },
   {
-    "Username": "Parker",
+    "UserName": "Parker",
     "Birthdate": "1961-04-23",
     "KnownAs": "Parker",
     "LastActive": "2020-12-31",
@@ -352,7 +352,7 @@
     "UpdatedBy": "Seeding"
   },
   {
-    "Username": "Browning",
+    "UserName": "Browning",
     "Birthdate": "1951-12-21",
     "KnownAs": "Browning",
     "LastActive": "2020-12-31",
@@ -374,7 +374,7 @@
     "UpdatedBy": "Seeding"
   },
   {
-    "Username": "Freeman",
+    "UserName": "Freeman",
     "Birthdate": "1960-02-13",
     "KnownAs": "Freeman",
     "LastActive": "2020-12-31",
@@ -396,7 +396,7 @@
     "UpdatedBy": "Seeding"
   },
   {
-    "Username": "Bryan",
+    "UserName": "Bryan",
     "Birthdate": "1986-08-13",
     "KnownAs": "Bryan",
     "LastActive": "2020-12-31",
@@ -418,7 +418,7 @@
     "UpdatedBy": "Seeding"
   },
   {
-    "Username": "Kerr",
+    "UserName": "Kerr",
     "Birthdate": "1997-03-08",
     "KnownAs": "Kerr",
     "LastActive": "2020-12-31",

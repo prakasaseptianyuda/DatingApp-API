@@ -8,6 +8,6 @@ namespace DatingApp.WebApi.Interfaces
 {
     public interface ITokenService
     {
-        String CreateToken(User user);
+        Task<string> CreateToken(AppUser user);
     }
 }
